@@ -5,10 +5,11 @@ import com.crud.tasks.domain.TaskDTO;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DBService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,29 +21,34 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @GetMapping
-    public List<TaskDTO> getTasks() {
+    public ResponseEntity<List<TaskDTO>> getTasks() {
         List<Task> tasks = service.getAllTasks();
-        return taskMapper.mapToTaskDTOList(tasks);
+        return ResponseEntity.ok(taskMapper.mapToTaskDTOList(tasks));
     }
 
     @GetMapping(value = "{taskId}")
-    public TaskDTO getTask(@PathVariable Long taskId) {
-        return taskMapper.mapToTaskDTO(service.getTaskById(taskId).get());
+    public ResponseEntity<TaskDTO> getTask(@PathVariable Long taskId) throws TaskNotFoundException {
+        return ResponseEntity.ok(taskMapper.mapToTaskDTO(service.getTaskById(taskId)));
     }
 
-    @DeleteMapping
-    public void deleteTask(Long taskId) {
-
+    @DeleteMapping(value = "{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) throws TaskNotFoundException {
+        service.deleteById(taskId);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public TaskDTO updateTask(TaskDTO taskDto) {
-        return new TaskDTO(1L, "Edited test title", "Test content");
+    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO) {
+        Task task = taskMapper.mapToTask(taskDTO);
+        Task savedTask = service.saveTask(task);
+        return ResponseEntity.ok(taskMapper.mapToTaskDTO(savedTask));
     }
 
-    @PostMapping
-    public void createTask(TaskDTO taskDto) {
-
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createTask(@RequestBody TaskDTO taskDto) {
+        Task task = taskMapper.mapToTask(taskDto);
+        service.saveTask(task);
+        return ResponseEntity.ok().build();
     }
 
 }
