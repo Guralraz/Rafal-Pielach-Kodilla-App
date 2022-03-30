@@ -1,0 +1,15 @@
+body {
+    background-color: grey;
+}
+
+h1 {
+    text-align: center;
+    color: red;
+    font-size: xxx-large;
+}
+
+p {
+    text-align: center;
+    color: aqua;
+    font-size: larger;
+}
