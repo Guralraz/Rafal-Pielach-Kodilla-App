@@ -1,12 +1,11 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDTO;
+import com.crud.tasks.domain.TrelloCardDTO;
 import com.crud.tasks.trello.client.TrelloClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,4 +29,10 @@ public class TrelloController {
             System.out.println(trelloBoardDTO.getId() + " " + trelloBoardDTO.getName());
         });
     }
+
+    @PostMapping("cards")
+    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDTO trelloCardDTO) {
+        return trelloClient.createNewCard(trelloCardDTO);
+    }
+
 }
