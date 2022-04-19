@@ -5,6 +5,7 @@ import com.crud.tasks.domain.TrelloBoardDTO;
 import com.crud.tasks.domain.TrelloCardDTO;
 import com.crud.tasks.trello.client.TrelloClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,21 +19,13 @@ public class TrelloController {
     private final TrelloClient trelloClient;
 
     @GetMapping("boards")
-    public void getTrelloBoards() {
-
-        List<TrelloBoardDTO> trelloBoards = trelloClient.getTrelloBoards();
-
-        trelloBoards.stream()
-                .filter(trelloBoardDTO -> trelloBoardDTO.getId() != null)
-                .filter(trelloBoardDTO -> trelloBoardDTO.getName().contains("Kodilla"))
-                .forEach(trelloBoardDTO -> {
-            System.out.println(trelloBoardDTO.getId() + " " + trelloBoardDTO.getName());
-        });
+    public ResponseEntity<List<TrelloBoardDTO>> getTrelloBoards() {
+        return ResponseEntity.ok(trelloClient.getTrelloBoards());
     }
 
     @PostMapping("cards")
-    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDTO trelloCardDTO) {
-        return trelloClient.createNewCard(trelloCardDTO);
+    public ResponseEntity<CreatedTrelloCard> createTrelloCard(@RequestBody TrelloCardDTO trelloCardDTO) {
+        return ResponseEntity.ok(trelloClient.createNewCard(trelloCardDTO));
     }
 
 }
