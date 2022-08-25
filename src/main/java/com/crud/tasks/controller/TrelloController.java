@@ -3,7 +3,6 @@ package com.crud.tasks.controller;
 import com.crud.tasks.domain.CreatedTrelloCardDTO;
 import com.crud.tasks.domain.TrelloBoardDTO;
 import com.crud.tasks.domain.TrelloCardDTO;
-import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.facade.TrelloFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

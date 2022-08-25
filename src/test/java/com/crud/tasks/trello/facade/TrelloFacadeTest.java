@@ -32,7 +32,7 @@ class TrelloFacadeTest {
 
     @Test
     void shouldFetchEmptyList() {
-        // Given
+        //Given
         List<TrelloListDTO> trelloLists =
                 List.of(new TrelloListDTO("1", "test_list", false));
         List<TrelloBoardDTO> trelloBoards =
@@ -47,17 +47,17 @@ class TrelloFacadeTest {
         when(trelloMapper.mapToBoardsDTO(anyList())).thenReturn(List.of());
         when(trelloValidator.validateTrelloBoards(mappedTrelloBoards)).thenReturn(List.of());
 
-        // When
+        //When
         List<TrelloBoardDTO> trelloBoardDtos = trelloFacade.fetchTrelloBoards();
 
-        // Then
+        //Then
         assertThat(trelloBoardDtos).isNotNull();
         assertThat(trelloBoardDtos.size()).isEqualTo(0);
     }
 
     @Test
     void shouldFetchTrelloBoards() {
-        // Given
+        //Given
         List<TrelloListDTO> trelloLists =
                 List.of(new TrelloListDTO("1", "test_list", false));
         List<TrelloBoardDTO> trelloBoards =
@@ -71,10 +71,10 @@ class TrelloFacadeTest {
         when(trelloMapper.mapToBoardsDTO(anyList())).thenReturn(trelloBoards);
         when(trelloValidator.validateTrelloBoards(mappedTrelloBoards)).thenReturn(mappedTrelloBoards);
 
-        // When
+        //When
         List<TrelloBoardDTO> trelloBoardDtos = trelloFacade.fetchTrelloBoards();
 
-        // Then
+        //Then
         assertThat(trelloBoardDtos).isNotNull();
         assertThat(trelloBoardDtos.size()).isEqualTo(1);
         trelloBoardDtos.forEach(trelloBoardDto -> {
